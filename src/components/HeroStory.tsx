@@ -8,7 +8,10 @@ interface HeroStoryProps {
 
 export default function HeroStory({ article }: HeroStoryProps) {
     return (
-        <Link href={`/news/${article.slug}`} className="relative block group overflow-hidden bg-black aspect-[16/9] md:aspect-[16/8]">
+        <Link
+            href={`/news/${article.slug}`}
+            className={`relative block group overflow-hidden bg-black aspect-[16/9] md:aspect-[16/8] transition-all duration-300 ${article.isBreaking ? 'border-t-8 border-breaking shadow-[0_0_30px_rgba(204,0,0,0.2)]' : ''}`}
+        >
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-10" />
             <img
                 src={article.image}

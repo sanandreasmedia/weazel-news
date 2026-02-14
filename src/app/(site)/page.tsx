@@ -3,6 +3,7 @@ import HeroStory from '@/components/HeroStory';
 import LatestList from '@/components/LatestList';
 import NewsCard from '@/components/NewsCard';
 import SectionHeader from '@/components/SectionHeader';
+import SpotlightSection from '@/components/SpotlightSection';
 
 export default function HomePage() {
     // Main Story (First breaking or just the first)
@@ -38,6 +39,9 @@ export default function HomePage() {
                     ))}
                 </div>
             </div>
+
+            {/* Spotlight Section */}
+            <SpotlightSection />
 
             {/* Crime Section */}
             <div className="mb-16 border-t-8 border-black pt-8">

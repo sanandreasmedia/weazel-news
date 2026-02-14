@@ -9,8 +9,8 @@ export default function BreakingTicker() {
     if (breakingNews.length === 0) return null;
 
     return (
-        <div className="bg-breaking text-white py-2 overflow-hidden flex items-center border-y border-white/10">
-            <div className="px-4 font-black italic uppercase tracking-widest text-sm flex-shrink-0 flex items-center gap-2">
+        <div className="bg-breaking text-white py-2 overflow-hidden flex items-center border-y border-white/10 relative z-40 shadow-lg">
+            <div className="px-4 font-black italic uppercase tracking-widest text-sm flex-shrink-0 flex items-center gap-2 border-r border-white/20 mr-2 bg-breaking">
                 <span className="relative flex h-3 w-3">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
                     <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
