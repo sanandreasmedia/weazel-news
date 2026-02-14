@@ -4,6 +4,10 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Weazel News | Los Santos First Source for News",
   description: "Breaking News, Politics, Crime and Entertainment from Los Santos, San Andreas.",
+  icons: {
+    icon: '/weazel.svg',
+    apple: '/weazel.svg',
+  },
 };
 
 export default function RootLayout({
