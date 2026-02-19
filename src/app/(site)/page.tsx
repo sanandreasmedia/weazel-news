@@ -17,16 +17,16 @@ export default function HomePage() {
     const politicsNews = mockNews.filter(n => n.category === 'politics').slice(0, 4);
 
     return (
-        <div className="container-weazel py-10 md:py-16">
+        <div className="container-weazel py-12 md:py-20 flex flex-col gap-24">
             {/* Lead Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 mb-16">
-                <div className="lg:col-span-8">
-                    <HeroStory article={heroArticle} />
-                </div>
-                <div className="lg:col-span-4 lg:border-l lg:border-border lg:pl-12">
-                    <LatestList />
-                </div>
-            </div>
+            <section>
+                <HeroStory article={heroArticle} />
+            </section>
+
+            {/* Latest Section - No longer a sidebar */}
+            <section className="bg-white">
+                <LatestList />
+            </section>
 
             {/* Top Stories Grid */}
             <div className="mb-16">

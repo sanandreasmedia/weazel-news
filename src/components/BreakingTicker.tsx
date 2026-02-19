@@ -8,32 +8,27 @@ export default function BreakingTicker() {
 
     if (breakingNews.length === 0) return null;
 
+    const mainBreaking = breakingNews[0];
+
     return (
-        <div className="bg-fg text-white py-1.5 overflow-hidden flex items-center relative z-40 border-b border-border-dark">
-            <div className="px-6 font-black uppercase tracking-[0.2em] text-[9px] flex-shrink-0 flex items-center gap-2 bg-fg z-10 text-red">
-                <span className="w-1.5 h-1.5 bg-red rounded-full animate-pulse"></span>
-                Breaking
+        <div className="bg-fg text-white py-1.5 flex items-center relative z-40 border-b border-white/5">
+            <div className="container-weazel flex items-center gap-6">
+                <div className="flex-shrink-0 bg-red text-white text-[9px] font-black px-4 py-1.5 uppercase tracking-[0.3em]">
+                    Breaking
+                </div>
+
+                <Link
+                    href={`/news/${mainBreaking.slug}`}
+                    className="flex-grow text-[11px] font-black uppercase tracking-[0.15em] hover:text-red transition-colors line-clamp-1"
+                >
+                    {mainBreaking.title}
+                </Link>
+
+                <div className="hidden md:flex items-center gap-3 text-[9px] font-bold text-white/30 uppercase tracking-[0.2em]">
+                    <span className="w-1.5 h-1.5 bg-red rounded-full"></span>
+                    Broadcast Intelligence Active
+                </div>
             </div>
-            <div className="flex gap-12 animate-ticker whitespace-nowrap">
-                {breakingNews.concat(breakingNews).map((news, i) => (
-                    <Link
-                        key={`${news.slug}-${i}`}
-                        href={`/news/${news.slug}`}
-                        className="text-[10px] font-bold uppercase tracking-[0.1em] hover:text-red transition-colors"
-                    >
-                        {news.title}
-                    </Link>
-                ))}
-            </div>
-            <style jsx global>{`
-                @keyframes ticker-scroll {
-                    0% { transform: translateX(0); }
-                    100% { transform: translateX(-50%); }
-                }
-                .animate-ticker {
-                    animation: ticker-scroll 60s linear infinite;
-                }
-            `}</style>
         </div>
     );
 }
