@@ -1,32 +1,36 @@
-'use client';
-
-import { useSearchParams } from 'next/navigation';
-import { mockNews } from '@/lib/mockNews';
+import { client } from '@/sanity/lib/client';
+import { searchArticlesQuery } from '@/sanity/lib/queries';
 import NewsCard from '@/components/NewsCard';
 import SectionHeader from '@/components/SectionHeader';
 import { Suspense } from 'react';
 
-function SearchResults() {
-    const searchParams = useSearchParams();
-    const query = searchParams.get('q') || '';
+interface SearchPageProps {
+    searchParams: Promise<{ q?: string }>;
+}
 
-    const results = mockNews.filter(n =>
-        n.title.toLowerCase().includes(query.toLowerCase()) ||
-        n.excerpt.toLowerCase().includes(query.toLowerCase()) ||
-        n.tags.some(t => t.toLowerCase().includes(query.toLowerCase()))
-    );
+async function SearchResults({ query }: { query: string }) {
+    let results = [];
+    if (query) {
+        try {
+            results = await client.fetch<any[]>(searchArticlesQuery, { query });
+        } catch (e) {
+            console.error('Sanity search error:', e);
+        }
+    }
 
     return (
-        <div className="max-container py-12 min-h-[60vh]">
-            <div className="mb-16 border-b border-fg pb-12">
-                <h1 className="editorial-headline text-5xl md:text-8xl text-fg mb-6">
+        <div className="container-weazel py-10 md:py-16 min-h-[60vh]">
+            <div className="mb-16 border-b-2 border-fg pb-12">
+                <h1 className="headline-lg text-fg mb-10">
                     Search Results
                 </h1>
-                <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-muted">
-                    <span>Query:</span>
-                    <span className="text-fg border border-border px-2 py-1">"{query}"</span>
-                    <span className="w-1 h-1 bg-border rounded-full" />
-                    <span>{results.length} Matches Found</span>
+                <div className="flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.3em] text-muted">
+                    <div className="flex items-center gap-3">
+                        <span>Query</span>
+                        <span className="text-fg bg-fg/5 px-3 py-1.5 border border-border">"{query || 'NONE'}"</span>
+                    </div>
+                    <span className="w-1.5 h-1.5 bg-border rounded-full" />
+                    <span>{results.length} Records Found</span>
                 </div>
             </div>
 
@@ -34,33 +38,33 @@ function SearchResults() {
                 {query ? (
                     results.length > 0 ? (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
-                            {results.map((article) => (
+                            {results.map((article: any) => (
                                 <NewsCard key={article.slug} article={article} />
                             ))}
                         </div>
                     ) : (
                         <div className="text-center py-24 border border-border">
-                            <h3 className="text-lg font-bold uppercase tracking-widest mb-2">No results found</h3>
-                            <p className="text-muted font-serif">We couldn't find any matches for "{query}". Try another keyword.</p>
+                            <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-4">No Matches Found</h3>
+                            <p className="text-muted text-xs uppercase tracking-widest font-bold">Try another frequency or keyword.</p>
                         </div>
                     )
                 ) : (
                     <div className="text-center py-24 border border-border">
-                        <h3 className="text-lg font-bold uppercase tracking-widest mb-2">Enter a search term</h3>
-                        <p className="text-muted font-serif">The archives of Los Santos are at your disposal.</p>
+                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-4">Awaiting Input</h3>
+                        <p className="text-muted text-xs uppercase tracking-widest font-bold">Enter a term to scan the Weazel archives.</p>
                     </div>
                 )}
             </div>
 
             {/* Suggested Topics */}
             <div className="mt-24">
-                <SectionHeader title="Popular Searches" />
+                <SectionHeader title="Popular Keywords" />
                 <div className="flex flex-wrap gap-4">
                     {['LSPD', 'Vinewood', 'Bank Robbery', 'Diamond Casino', 'Politics'].map(tag => (
                         <a
                             key={tag}
                             href={`/search?q=${encodeURIComponent(tag)}`}
-                            className="text-[10px] font-bold uppercase tracking-[0.2em] border border-border px-6 py-3 hover:bg-fg hover:text-white transition-all"
+                            className="text-[10px] font-black uppercase tracking-[0.3em] border border-border px-8 py-4 hover:bg-fg hover:text-white transition-all"
                         >
                             {tag}
                         </a>
@@ -71,10 +75,17 @@ function SearchResults() {
     );
 }
 
-export default function SearchPage() {
+export default async function SearchPage({ searchParams }: SearchPageProps) {
+    const { q } = await searchParams;
+    const query = q || '';
+
     return (
-        <Suspense fallback={<div className="max-container py-20 text-center font-bold uppercase tracking-widest animate-pulse">Scanning archives...</div>}>
-            <SearchResults />
+        <Suspense fallback={
+            <div className="container-weazel py-20 text-center">
+                <div className="text-[10px] font-black uppercase tracking-[0.5em] animate-pulse">Scanning Archives...</div>
+            </div>
+        }>
+            <SearchResults query={query} />
         </Suspense>
     );
 }

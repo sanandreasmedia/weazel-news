@@ -1,19 +1,20 @@
-import { NewsArticle } from '@/lib/mockNews';
 import Link from 'next/link';
-import Image from 'next/image';
+import { urlForImage } from '@/sanity/lib/image';
 
 interface HeroStoryProps {
-    article: NewsArticle;
+    article: any;
 }
 
 export default function HeroStory({ article }: HeroStoryProps) {
+    const imageUrl = article.heroImage ? urlForImage(article.heroImage).url() : article.image;
+
     return (
         <Link href={`/news/${article.slug}`} className="group block">
             <div className="flex flex-col lg:grid lg:grid-cols-2 lg:items-stretch lg:min-h-[500px] border border-border overflow-hidden bg-white">
                 {/* Image Section */}
                 <div className="relative overflow-hidden order-1 lg:order-2 bg-fg">
                     <img
-                        src={article.image}
+                        src={imageUrl}
                         alt={article.title}
                         className="object-cover w-full h-full grayscale-[0.2] group-hover:grayscale-0 transition-all duration-1000 group-hover:scale-105"
                     />

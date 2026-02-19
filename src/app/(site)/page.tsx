@@ -1,20 +1,47 @@
-import { mockNews } from '@/lib/mockNews';
+import { client } from '@/sanity/lib/client';
+import { articlesQuery } from '@/sanity/lib/queries';
 import HeroStory from '@/components/HeroStory';
 import LatestList from '@/components/LatestList';
 import NewsCard from '@/components/NewsCard';
 import SectionHeader from '@/components/SectionHeader';
 import Link from 'next/link';
+import { urlForImage } from '@/sanity/lib/image';
 
-export default function HomePage() {
+export const revalidate = 60; // Revalidate every minute
+
+export default async function HomePage() {
+    let articles = [];
+    let error = false;
+
+    try {
+        articles = await client.fetch(articlesQuery);
+    } catch (e) {
+        console.error('Sanity fetch error:', e);
+        error = true;
+    }
+
+    if (error || !articles || articles.length === 0) {
+        return (
+            <div className="container-weazel py-20 text-center">
+                <h1 className="text-2xl font-black uppercase mb-4">Connection to Weazel Intelligence Lost</h1>
+                <p className="text-muted text-sm uppercase tracking-widest">Unable to retrieve latest dispatches. Investigation in progress.</p>
+                {/* For development/demo, we could fall back to mockNews here if desired */}
+            </div>
+        );
+    }
+
     // Main Story
-    const heroArticle = mockNews.find(n => n.isBreaking) || mockNews[0];
+    const heroArticle = articles.find((n: any) => n.isBreaking) || articles[0];
 
     // Top Stories (Next 3)
-    const topStories = mockNews.filter(n => n.slug !== heroArticle.slug).slice(0, 3);
+    const topStories = articles.filter((n: any) => n.slug !== heroArticle.slug).slice(0, 3);
+
+    // Latest Briefing (excluding top ones)
+    const latestBriefing = articles.slice(0, 6);
 
     // Category News
-    const crimeNews = mockNews.filter(n => n.category === 'crime').slice(0, 4);
-    const politicsNews = mockNews.filter(n => n.category === 'politics').slice(0, 4);
+    const crimeNews = articles.filter((n: any) => n.category === 'crime').slice(0, 4);
+    const politicsNews = articles.filter((n: any) => n.category === 'politics').slice(0, 4);
 
     return (
         <div className="container-weazel py-12 md:py-20 flex flex-col gap-24">
@@ -23,16 +50,16 @@ export default function HomePage() {
                 <HeroStory article={heroArticle} />
             </section>
 
-            {/* Latest Section - No longer a sidebar */}
+            {/* Latest Section */}
             <section className="bg-white">
-                <LatestList />
+                <LatestList articles={latestBriefing} />
             </section>
 
             {/* Top Stories Grid */}
             <div className="mb-16">
                 <SectionHeader title="Top Stories" />
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
-                    {topStories.map((news) => (
+                    {topStories.map((news: any) => (
                         <NewsCard key={news.slug} article={news} />
                     ))}
                 </div>
@@ -44,14 +71,14 @@ export default function HomePage() {
                 <div>
                     <SectionHeader title="Crime" href="/category/crime" />
                     <div className="flex flex-col">
-                        {crimeNews.map((news) => (
+                        {crimeNews.map((news: any) => (
                             <Link
                                 key={news.slug}
                                 href={`/news/${news.slug}`}
                                 className="group flex justify-between py-5 border-b border-border last:border-0"
                             >
                                 <div className="max-w-[75%]">
-                                    <h4 className="text-xs font-bold leading-snug group-hover:text-red transition-colors mb-2">
+                                    <h4 className="text-xs font-bold leading-snug group-hover:text-red transition-colors mb-2 text-fg">
                                         {news.title}
                                     </h4>
                                     <p className="text-[9px] text-muted font-bold uppercase tracking-widest">
@@ -59,7 +86,11 @@ export default function HomePage() {
                                     </p>
                                 </div>
                                 <div className="w-24 h-16 overflow-hidden bg-muted/10">
-                                    <img src={news.image} alt="" className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all" />
+                                    <img
+                                        src={urlForImage(news.heroImage).url()}
+                                        alt=""
+                                        className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all"
+                                    />
                                 </div>
                             </Link>
                         ))}
@@ -70,14 +101,14 @@ export default function HomePage() {
                 <div>
                     <SectionHeader title="Politics" href="/category/politics" />
                     <div className="flex flex-col">
-                        {politicsNews.map((news) => (
+                        {politicsNews.map((news: any) => (
                             <Link
                                 key={news.slug}
                                 href={`/news/${news.slug}`}
                                 className="group flex justify-between py-5 border-b border-border last:border-0"
                             >
                                 <div className="max-w-[75%]">
-                                    <h4 className="text-xs font-bold leading-snug group-hover:text-red transition-colors mb-2">
+                                    <h4 className="text-xs font-bold leading-snug group-hover:text-red transition-colors mb-2 text-fg">
                                         {news.title}
                                     </h4>
                                     <p className="text-[9px] text-muted font-bold uppercase tracking-widest">
@@ -85,7 +116,11 @@ export default function HomePage() {
                                     </p>
                                 </div>
                                 <div className="w-24 h-16 overflow-hidden bg-muted/10">
-                                    <img src={news.image} alt="" className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all" />
+                                    <img
+                                        src={urlForImage(news.heroImage).url()}
+                                        alt=""
+                                        className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all"
+                                    />
                                 </div>
                             </Link>
                         ))}

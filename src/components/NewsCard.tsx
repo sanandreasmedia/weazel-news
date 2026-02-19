@@ -1,16 +1,18 @@
-import { NewsArticle } from '@/lib/mockNews';
 import Link from 'next/link';
+import { urlForImage } from '@/sanity/lib/image';
 
 interface NewsCardProps {
-    article: NewsArticle;
+    article: any;
 }
 
 export default function NewsCard({ article }: NewsCardProps) {
+    const imageUrl = article.heroImage ? urlForImage(article.heroImage).url() : article.image;
+
     return (
         <Link href={`/news/${article.slug}`} className="group flex flex-col">
             <div className="aspect-[16/9] relative overflow-hidden mb-4 bg-muted/10">
                 <img
-                    src={article.image}
+                    src={imageUrl}
                     alt={article.title}
                     className="object-cover w-full h-full grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
                 />

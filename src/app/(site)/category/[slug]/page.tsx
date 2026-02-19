@@ -1,12 +1,14 @@
-import { mockNews } from '@/lib/mockNews';
+import { client } from '@/sanity/lib/client';
+import { articlesByCategoryQuery } from '@/sanity/lib/queries';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import NewsCard from '@/components/NewsCard';
-import SectionHeader from '@/components/SectionHeader';
 
 interface CategoryPageProps {
     params: Promise<{ slug: string }>;
 }
+
+export const revalidate = 60; // Revalidate every minute
 
 export async function generateMetadata({ params }: CategoryPageProps): Promise<Metadata> {
     const { slug } = await params;
@@ -20,10 +22,17 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
     const { slug } = await params;
-    const categoryNews = mockNews.filter(n => n.category === slug);
 
-    if (categoryNews.length === 0 && !['crime', 'politics', 'business', 'culture', 'sports', 'home'].includes(slug)) {
+    const validCategories = ['crime', 'politics', 'business', 'culture', 'sports'];
+    if (!validCategories.includes(slug.toLowerCase())) {
         notFound();
+    }
+
+    let categoryNews = [];
+    try {
+        categoryNews = await client.fetch(articlesByCategoryQuery, { category: slug });
+    } catch (e) {
+        console.error('Sanity fetch error:', e);
     }
 
     const categoryName = slug.charAt(0).toUpperCase() + slug.slice(1);
@@ -48,7 +57,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             <div>
                 {categoryNews.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
-                        {categoryNews.map((article) => (
+                        {categoryNews.map((article: any) => (
                             <NewsCard key={article.slug} article={article} />
                         ))}
                     </div>

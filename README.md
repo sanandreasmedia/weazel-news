@@ -1,36 +1,24 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Weazel News Network
 
-## Getting Started
+Official Los Santos News Portal.
 
-First, run the development server:
+## Reporter Workflow (Sanity CMS)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1.  **Access the Studio**: Navigate to `/studio` on the deployed site.
+2.  **Create Dispatch**: Click on the "Article" type and click the Create icon (+).
+3.  **Drafting**: Fill in the title, slug (auto-generate), category, and compose your report using the rich text editor.
+4.  **Media & Tags**: Upload a high-resolution hero image and add relevant tags (e.g., #LSPD, #Vinewood).
+5.  **Broadcast**: Click the green "Publish" button. The article will appear on the site according to the "Published at" time (Immediate or scheduled).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `NEXT_PUBLIC_SANITY_PROJECT_ID`: Get this from Sanity.io Manage dashboard.
+- `NEXT_PUBLIC_SANITY_DATASET`: Usually "production".
+- `NEXT_PUBLIC_SANITY_API_VERSION`: "2024-02-19" (or latest).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Inviting Reporters
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1.  Go to [sanity.io/manage](https://www.sanity.io/manage)
+2.  Select your project.
+3.  Go to the "Users" tab.
+4.  Invite new members and assign them the "Editor" or "Administrator" role.

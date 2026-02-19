@@ -1,8 +1,11 @@
-import { mockNews } from '@/lib/mockNews';
 import Link from 'next/link';
 
-export default function LatestList() {
-    const latestNews = mockNews.slice(0, 6);
+interface LatestListProps {
+    articles?: any[];
+}
+
+export default function LatestList({ articles }: LatestListProps) {
+    const listArticles = articles?.slice(0, 6) || [];
 
     return (
         <div className="flex flex-col bg-white">
@@ -14,7 +17,7 @@ export default function LatestList() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-12">
-                {latestNews.map((news) => (
+                {listArticles.map((news) => (
                     <Link
                         key={news.slug}
                         href={`/news/${news.slug}`}

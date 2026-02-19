@@ -1,43 +1,66 @@
-import { mockNews } from '@/lib/mockNews';
+import { client } from '@/sanity/lib/client';
+import { articleBySlugQuery, articlesByCategoryQuery } from '@/sanity/lib/queries';
 import { notFound } from 'next/navigation';
 import { Metadata } from 'next';
 import Link from 'next/link';
 import NewsCard from '@/components/NewsCard';
 import SectionHeader from '@/components/SectionHeader';
+import { urlForImage } from '@/sanity/lib/image';
+import { PortableText } from '@portabletext/react';
 
 interface NewsPageProps {
     params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 60; // Revalidate every minute
+
 export async function generateMetadata({ params }: NewsPageProps): Promise<Metadata> {
     const { slug } = await params;
-    const article = mockNews.find(n => n.slug === slug);
+    const article = await client.fetch(articleBySlugQuery, { slug });
 
     if (!article) return { title: 'Article Not Found' };
+
+    const imageUrl = article.heroImage ? urlForImage(article.heroImage).url() : '';
 
     return {
         title: `${article.title} | Weazel News`,
         description: article.excerpt,
         openGraph: {
-            images: [article.image],
+            images: [imageUrl],
         },
     };
 }
 
 export default async function NewsArticlePage({ params }: NewsPageProps) {
     const { slug } = await params;
-    const article = mockNews.find(n => n.slug === slug);
+
+    let article;
+    let relatedArticles = [];
+
+    try {
+        article = await client.fetch(articleBySlugQuery, { slug });
+        if (article) {
+            relatedArticles = await client.fetch(articlesByCategoryQuery, {
+                category: article.category
+            });
+            relatedArticles = relatedArticles.filter((n: any) => n.slug !== slug).slice(0, 3);
+        }
+    } catch (e) {
+        console.error('Sanity fetch error:', e);
+    }
 
     if (!article) {
         notFound();
     }
 
-    const wordCount = article.content?.split(/\s+/).length || 0;
+    // Estimate reading time from block content roughly
+    const textContent = article.body?.map((block: any) =>
+        block._type === 'block' ? block.children?.map((c: any) => c.text).join(' ') : ''
+    ).join(' ') || '';
+    const wordCount = textContent.split(/\s+/).length || 0;
     const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
-    const relatedArticles = mockNews
-        .filter(n => n.category === article.category && n.slug !== article.slug)
-        .slice(0, 3);
+    const imageUrl = article.heroImage ? urlForImage(article.heroImage).url() : '';
 
     return (
         <article className="container-weazel py-10 md:py-16">
@@ -73,30 +96,33 @@ export default async function NewsArticlePage({ params }: NewsPageProps) {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                 <div className="lg:col-span-8">
                     <div className="aspect-video relative overflow-hidden mb-12 bg-muted/10">
-                        <img
-                            src={article.image}
-                            alt={article.title}
-                            className="object-cover w-full h-full grayscale-[0.2]"
-                        />
+                        {imageUrl && (
+                            <img
+                                src={imageUrl}
+                                alt={article.title}
+                                className="object-cover w-full h-full grayscale-[0.2]"
+                            />
+                        )}
                     </div>
 
-                    <div
-                        className="article-content prose prose-zinc prose-invert max-w-none text-fg/90
+                    <div className="article-content prose prose-zinc max-w-none text-fg/90
                                 prose-headings:text-fg prose-headings:font-black prose-headings:uppercase prose-headings:tracking-widest prose-headings:text-xs
                                 prose-blockquote:border-red prose-blockquote:bg-red/5 prose-blockquote:px-8 prose-blockquote:py-4 prose-blockquote:text-lg prose-blockquote:font-bold prose-blockquote:text-fg
                                 prose-strong:font-black prose-strong:text-fg
-                                prose-a:text-red hover:prose-a:underline transition-all"
-                        dangerouslySetInnerHTML={{ __html: article.content || '' }}
-                    />
-
-                    <div className="mt-20 pt-10 border-t border-border flex flex-wrap gap-6">
-                        <span className="text-[10px] font-black uppercase tracking-widest text-muted">Tags</span>
-                        {article.tags.map(tag => (
-                            <span key={tag} className="text-[10px] font-black uppercase tracking-widest text-fg hover:text-red transition-colors cursor-pointer border-b border-border hover:border-red">
-                                #{tag}
-                            </span>
-                        ))}
+                                prose-a:text-red hover:prose-a:underline transition-all">
+                        <PortableText value={article.body} />
                     </div>
+
+                    {article.tags && article.tags.length > 0 && (
+                        <div className="mt-20 pt-10 border-t border-border flex flex-wrap gap-6">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-muted">Tags</span>
+                            {article.tags.map((tag: any) => (
+                                <span key={tag} className="text-[10px] font-black uppercase tracking-widest text-fg hover:text-red transition-colors cursor-pointer border-b border-border hover:border-red">
+                                    #{tag}
+                                </span>
+                            ))}
+                        </div>
+                    )}
                 </div>
 
                 <aside className="lg:col-span-4 space-y-16">
@@ -128,7 +154,7 @@ export default async function NewsArticlePage({ params }: NewsPageProps) {
                 <section className="mt-24 pt-16 border-t-2 border-fg">
                     <SectionHeader title={`Related to ${article.category}`} href={`/category/${article.category}`} />
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-                        {relatedArticles.map((rel) => (
+                        {relatedArticles.map((rel: any) => (
                             <NewsCard key={rel.slug} article={rel} />
                         ))}
                     </div>
