@@ -7,16 +7,17 @@ interface SectionHeaderProps {
 
 export default function SectionHeader({ title, href }: SectionHeaderProps) {
     return (
-        <div className="flex items-end justify-between border-b border-border mb-8 pb-3">
-            <h2 className="text-xl font-bold uppercase tracking-widest text-fg">
+        <div className="flex items-center gap-6 mb-8 group">
+            <h2 className="headline-sm whitespace-nowrap">
                 {title}
             </h2>
+            <div className="flex-grow h-px bg-fg group-hover:bg-red transition-colors"></div>
             {href && (
                 <Link
                     href={href}
-                    className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted hover:text-red transition-colors"
+                    className="text-[9px] font-black uppercase tracking-[0.2em] text-muted hover:text-red transition-colors whitespace-nowrap"
                 >
-                    View All →
+                    View All
                 </Link>
             )}
         </div>

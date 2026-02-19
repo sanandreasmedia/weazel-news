@@ -17,9 +17,9 @@ export default function HomePage() {
     const politicsNews = mockNews.filter(n => n.category === 'politics').slice(0, 4);
 
     return (
-        <div className="max-container py-12">
+        <div className="container-weazel py-10 md:py-16">
             {/* Lead Section */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 md:gap-12 mb-16">
                 <div className="lg:col-span-8">
                     <HeroStory article={heroArticle} />
                 </div>
@@ -29,9 +29,9 @@ export default function HomePage() {
             </div>
 
             {/* Top Stories Grid */}
-            <div className="mb-20">
+            <div className="mb-16">
                 <SectionHeader title="Top Stories" />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
                     {topStories.map((news) => (
                         <NewsCard key={news.slug} article={news} />
                     ))}
@@ -39,7 +39,7 @@ export default function HomePage() {
             </div>
 
             {/* Category Blocks */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-20">
                 {/* Crime Section */}
                 <div>
                     <SectionHeader title="Crime" href="/category/crime" />
@@ -48,18 +48,18 @@ export default function HomePage() {
                             <Link
                                 key={news.slug}
                                 href={`/news/${news.slug}`}
-                                className="group flex justify-between py-4 border-b border-border last:border-0"
+                                className="group flex justify-between py-5 border-b border-border last:border-0"
                             >
-                                <div className="max-w-[70%]">
-                                    <h4 className="text-sm font-bold leading-snug group-hover:text-red transition-colors mb-1">
+                                <div className="max-w-[75%]">
+                                    <h4 className="text-xs font-bold leading-snug group-hover:text-red transition-colors mb-2">
                                         {news.title}
                                     </h4>
-                                    <p className="text-xs text-muted font-bold uppercase tracking-widest">
-                                        {new Date(news.publishedAt).toLocaleDateString()}
+                                    <p className="text-[9px] text-muted font-bold uppercase tracking-widest">
+                                        {new Date(news.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                     </p>
                                 </div>
-                                <div className="w-20 h-14 overflow-hidden bg-muted/10 grayscale-[0.5] group-hover:grayscale-0 transition-all">
-                                    <img src={news.image} alt="" className="w-full h-full object-cover" />
+                                <div className="w-24 h-16 overflow-hidden bg-muted/10">
+                                    <img src={news.image} alt="" className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all" />
                                 </div>
                             </Link>
                         ))}
@@ -74,18 +74,18 @@ export default function HomePage() {
                             <Link
                                 key={news.slug}
                                 href={`/news/${news.slug}`}
-                                className="group flex justify-between py-4 border-b border-border last:border-0"
+                                className="group flex justify-between py-5 border-b border-border last:border-0"
                             >
-                                <div className="max-w-[70%]">
-                                    <h4 className="text-sm font-bold leading-snug group-hover:text-red transition-colors mb-1">
+                                <div className="max-w-[75%]">
+                                    <h4 className="text-xs font-bold leading-snug group-hover:text-red transition-colors mb-2">
                                         {news.title}
                                     </h4>
-                                    <p className="text-xs text-muted font-bold uppercase tracking-widest">
-                                        {new Date(news.publishedAt).toLocaleDateString()}
+                                    <p className="text-[9px] text-muted font-bold uppercase tracking-widest">
+                                        {new Date(news.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                     </p>
                                 </div>
-                                <div className="w-20 h-14 overflow-hidden bg-muted/10 grayscale-[0.5] group-hover:grayscale-0 transition-all">
-                                    <img src={news.image} alt="" className="w-full h-full object-cover" />
+                                <div className="w-24 h-16 overflow-hidden bg-muted/10">
+                                    <img src={news.image} alt="" className="w-full h-full object-cover grayscale-[0.4] group-hover:grayscale-0 transition-all" />
                                 </div>
                             </Link>
                         ))}

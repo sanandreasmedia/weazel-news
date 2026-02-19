@@ -8,43 +8,39 @@ interface HeroStoryProps {
 
 export default function HeroStory({ article }: HeroStoryProps) {
     return (
-        <Link
-            href={`/news/${article.slug}`}
-            className="group flex flex-col gap-6"
-        >
-            <div className="relative aspect-[16/10] overflow-hidden bg-muted/10">
-                <img
-                    src={article.image}
-                    alt={article.title}
-                    className="object-cover w-full h-full grayscale-[0.2] transition-transform duration-700 group-hover:scale-105"
-                />
-            </div>
-
-            <div className="flex flex-col gap-3">
-                <div className="flex items-center gap-3">
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-red">
+        <Link href={`/news/${article.slug}`} className="group flex flex-col">
+            <div className="flex flex-col mb-8 order-2 lg:order-1">
+                <div className="flex items-center gap-3 mb-6">
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-red border-b-2 border-red">
                         {article.category}
                     </span>
+                    <span className="w-1.5 h-1.5 bg-border rounded-full"></span>
+                    <span className="text-[10px] font-bold text-muted uppercase tracking-widest">
+                        {new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                    </span>
                     {article.isBreaking && (
-                        <span className="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 border border-red text-red">
+                        <div className="ml-auto flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-red">
+                            <span className="w-2 h-2 bg-red rounded-full animate-pulse"></span>
                             Breaking
-                        </span>
+                        </div>
                     )}
                 </div>
 
-                <h1 className="editorial-headline text-4xl md:text-5xl lg:text-6xl text-fg group-hover:text-red transition-colors">
+                <h2 className="headline-xl group-hover:text-red transition-colors mb-6">
                     {article.title}
-                </h1>
+                </h2>
 
-                <p className="text-muted text-lg leading-relaxed max-w-2xl font-serif">
+                <p className="article-content text-muted opacity-80 mb-0">
                     {article.excerpt}
                 </p>
+            </div>
 
-                <div className="flex items-center gap-4 text-[10px] font-bold text-muted uppercase tracking-widest mt-2">
-                    <span>By {article.author}</span>
-                    <span className="w-1 h-1 bg-border rounded-full" />
-                    <span>{new Date(article.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
-                </div>
+            <div className="aspect-[16/9] relative overflow-hidden mb-8 order-1 lg:order-2 bg-muted/10">
+                <img
+                    src={article.image}
+                    alt={article.title}
+                    className="object-cover w-full h-full grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700 group-hover:scale-105"
+                />
             </div>
         </Link>
     );

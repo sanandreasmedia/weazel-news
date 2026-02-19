@@ -9,38 +9,29 @@ export default function BreakingTicker() {
     if (breakingNews.length === 0) return null;
 
     return (
-        <div className="bg-red text-white py-1.5 overflow-hidden flex items-center relative z-40">
-            <div className="px-6 font-bold uppercase tracking-[0.2em] text-[10px] flex-shrink-0 flex items-center gap-2 border-r border-white/20 mr-4 bg-red z-10">
+        <div className="bg-fg text-white py-1.5 overflow-hidden flex items-center relative z-40 border-b border-border-dark">
+            <div className="px-6 font-black uppercase tracking-[0.2em] text-[9px] flex-shrink-0 flex items-center gap-2 bg-fg z-10 text-red">
+                <span className="w-1.5 h-1.5 bg-red rounded-full animate-pulse"></span>
                 Breaking
             </div>
-            <div className="flex gap-12 animate-marquee whitespace-nowrap">
-                {breakingNews.map((news) => (
+            <div className="flex gap-12 animate-ticker whitespace-nowrap">
+                {breakingNews.concat(breakingNews).map((news, i) => (
                     <Link
-                        key={news.slug}
+                        key={`${news.slug}-${i}`}
                         href={`/news/${news.slug}`}
-                        className="text-[11px] font-bold uppercase tracking-wider hover:underline"
-                    >
-                        {news.title}
-                    </Link>
-                ))}
-                {/* Duplicate for seamless loop */}
-                {breakingNews.map((news) => (
-                    <Link
-                        key={`${news.slug}-dup`}
-                        href={`/news/${news.slug}`}
-                        className="text-[11px] font-bold uppercase tracking-wider hover:underline"
+                        className="text-[10px] font-bold uppercase tracking-[0.1em] hover:text-red transition-colors"
                     >
                         {news.title}
                     </Link>
                 ))}
             </div>
-            <style jsx>{`
-                .animate-marquee {
-                    animation: marquee 40s linear infinite;
-                }
-                @keyframes marquee {
+            <style jsx global>{`
+                @keyframes ticker-scroll {
                     0% { transform: translateX(0); }
                     100% { transform: translateX(-50%); }
+                }
+                .animate-ticker {
+                    animation: ticker-scroll 60s linear infinite;
                 }
             `}</style>
         </div>

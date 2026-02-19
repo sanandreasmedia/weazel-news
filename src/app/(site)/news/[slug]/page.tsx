@@ -40,33 +40,33 @@ export default async function NewsArticlePage({ params }: NewsPageProps) {
         .slice(0, 3);
 
     return (
-        <article className="max-container py-12">
+        <article className="container-weazel py-10 md:py-16">
             <header className="max-w-[800px] mb-12">
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex items-center gap-4 mb-8">
                     <Link
                         href={`/category/${article.category}`}
-                        className="text-[10px] font-bold uppercase tracking-widest text-red hover:underline"
+                        className="text-[10px] font-black uppercase tracking-[0.2em] text-red border-b border-red"
                     >
                         {article.category}
                     </Link>
-                    <span className="w-1 h-1 bg-border rounded-full" />
-                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted">
+                    <span className="w-1.5 h-1.5 bg-border rounded-full"></span>
+                    <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-muted">
                         {new Date(article.publishedAt).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' })}
                     </span>
                 </div>
 
-                <h1 className="editorial-headline text-4xl md:text-6xl text-fg mb-8">
+                <h1 className="headline-lg text-fg mb-10">
                     {article.title}
                 </h1>
 
-                <p className="text-xl md:text-2xl text-muted font-serif leading-relaxed italic mb-8 border-l border-border pl-6">
+                <p className="text-xl text-muted font-bold leading-relaxed mb-10 border-l-4 border-fg pl-8 italic">
                     {article.excerpt}
                 </p>
 
-                <div className="flex items-center gap-6 text-[10px] font-bold text-fg uppercase tracking-widest border-y border-border py-4">
+                <div className="flex items-center gap-8 text-[10px] font-black text-fg uppercase tracking-[0.2em] border-y border-border py-4">
                     <span>By {article.author}</span>
-                    <span className="w-1 h-1 bg-border rounded-full" />
-                    <span>{readingTime} MIN READ</span>
+                    <span className="w-1.5 h-1.5 bg-border rounded-full"></span>
+                    <span className="text-muted">{readingTime} MIN READ</span>
                 </div>
             </header>
 
@@ -76,57 +76,57 @@ export default async function NewsArticlePage({ params }: NewsPageProps) {
                         <img
                             src={article.image}
                             alt={article.title}
-                            className="object-cover w-full h-full grayscale-[0.1]"
+                            className="object-cover w-full h-full grayscale-[0.2]"
                         />
                     </div>
 
                     <div
-                        className="editorial-body prose prose-lg max-w-none text-fg/90
-                                prose-headings:font-sans prose-headings:font-bold prose-headings:uppercase prose-headings:tracking-widest prose-headings:text-xs
-                                prose-blockquote:border-red prose-blockquote:bg-red/5 prose-blockquote:px-8 prose-blockquote:py-2 prose-blockquote:font-serif
-                                prose-strong:font-bold prose-strong:text-fg
+                        className="article-content prose prose-zinc prose-invert max-w-none text-fg/90
+                                prose-headings:text-fg prose-headings:font-black prose-headings:uppercase prose-headings:tracking-widest prose-headings:text-xs
+                                prose-blockquote:border-red prose-blockquote:bg-red/5 prose-blockquote:px-8 prose-blockquote:py-4 prose-blockquote:text-lg prose-blockquote:font-bold prose-blockquote:text-fg
+                                prose-strong:font-black prose-strong:text-fg
                                 prose-a:text-red hover:prose-a:underline transition-all"
                         dangerouslySetInnerHTML={{ __html: article.content || '' }}
                     />
 
-                    <div className="mt-16 pt-8 border-t border-border flex flex-wrap gap-4">
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-muted">Tags</span>
+                    <div className="mt-20 pt-10 border-t border-border flex flex-wrap gap-6">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-muted">Tags</span>
                         {article.tags.map(tag => (
-                            <span key={tag} className="text-[10px] font-bold uppercase tracking-widest text-fg hover:text-red transition-colors cursor-pointer">
+                            <span key={tag} className="text-[10px] font-black uppercase tracking-widest text-fg hover:text-red transition-colors cursor-pointer border-b border-border hover:border-red">
                                 #{tag}
                             </span>
                         ))}
                     </div>
                 </div>
 
-                <aside className="lg:col-span-4 space-y-12">
-                    <div className="bg-fg text-white p-8">
-                        <h3 className="text-xs font-bold uppercase tracking-widest mb-4">Newsletter</h3>
-                        <p className="text-white/60 text-xs mb-6 font-serif">Get the latest Los Santos updates directly to your inbox. Professional journalism, no rumors.</p>
+                <aside className="lg:col-span-4 space-y-16">
+                    <div className="bg-fg text-white p-10">
+                        <h3 className="text-[10px] font-black uppercase tracking-[0.3em] mb-6">Briefing</h3>
+                        <p className="text-white/60 text-xs mb-8 font-medium leading-loose">Get exclusive Los Santos intelligence delivered directly to your secure device.</p>
                         <input
                             type="email"
-                            placeholder="Email address"
-                            className="w-full bg-white/10 border-b border-white/20 px-0 py-3 text-sm mb-6 outline-none focus:border-red transition-colors"
+                            placeholder="SECURE EMAIL"
+                            className="w-full bg-white/10 border-b border-white/20 px-0 py-4 text-[10px] font-bold mb-8 outline-none focus:border-red transition-colors placeholder:text-white/20 uppercase tracking-widest"
                         />
-                        <button className="text-[10px] font-bold uppercase tracking-[0.2em] text-white hover:text-red transition-colors">
-                            Subscribe →
+                        <button className="text-[10px] font-black uppercase tracking-[0.4em] text-white hover:text-red transition-colors">
+                            SUBSCRIBE →
                         </button>
                     </div>
 
                     <div className="sticky top-32">
-                        <h3 className="text-[10px] font-bold uppercase tracking-widest mb-6 text-muted border-b border-border pb-2">Share Story</h3>
-                        <div className="flex flex-col gap-4">
-                            <button className="text-xs font-bold uppercase tracking-widest text-fg hover:text-red text-left transition-colors">Bleeter</button>
-                            <button className="text-xs font-bold uppercase tracking-widest text-fg hover:text-red text-left transition-colors">Lifeinvader</button>
-                            <button className="text-xs font-bold uppercase tracking-widest text-fg hover:text-red text-left transition-colors">Copy Link</button>
+                        <h3 className="text-[9px] font-black uppercase tracking-[0.3em] mb-8 text-muted border-b border-border pb-2">Distribution</h3>
+                        <div className="flex flex-col gap-6">
+                            <button className="text-[10px] font-black uppercase tracking-[0.2em] text-fg hover:text-red text-left transition-colors">Bleeter</button>
+                            <button className="text-[10px] font-black uppercase tracking-[0.2em] text-fg hover:text-red text-left transition-colors">Lifeinvader</button>
+                            <button className="text-[10px] font-black uppercase tracking-[0.2em] text-fg hover:text-red text-left transition-colors">Copy Link</button>
                         </div>
                     </div>
                 </aside>
             </div>
 
             {relatedArticles.length > 0 && (
-                <section className="mt-24 pt-16 border-t border-fg">
-                    <SectionHeader title={`More in ${article.category}`} href={`/category/${article.category}`} />
+                <section className="mt-24 pt-16 border-t-2 border-fg">
+                    <SectionHeader title={`Related to ${article.category}`} href={`/category/${article.category}`} />
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                         {relatedArticles.map((rel) => (
                             <NewsCard key={rel.slug} article={rel} />

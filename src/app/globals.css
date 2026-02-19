@@ -3,8 +3,9 @@
 :root {
   --bg: #FFFFFF;
   --fg: #0B0B0B;
-  --muted: #71717A;
+  --muted: #737373;
   --border: #E5E5E5;
+  --border-dark: #1A1A1A;
   --red: #E10600;
 }
 
@@ -13,18 +14,17 @@
   --color-fg: var(--fg);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-border-dark: var(--border-dark);
   --color-red: var(--red);
 
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-display: "Playfair Display", "Georgia", serif;
-  --font-header: "Inter", system-ui, sans-serif;
 }
 
 @layer base {
   body {
     background: var(--bg);
     color: var(--fg);
-    @apply antialiased selection:bg-red selection:text-white;
+    @apply antialiased selection:bg-red selection:text-white font-sans text-sm md:text-base;
   }
 
   h1,
@@ -33,26 +33,38 @@
   h4,
   h5,
   h6 {
-    @apply font-bold tracking-tight;
+    @apply font-bold tracking-tighter uppercase;
   }
 }
 
-.max-container {
-  @apply max-w-[1100px] mx-auto px-4 md:px-8;
+.container-weazel {
+  @apply max-w-[1140px] mx-auto px-4 md:px-6;
 }
 
-/* Editorial Typography */
-.editorial-headline {
-  @apply font-display leading-[1.1] tracking-[-0.02em];
+/* Typography Utilities */
+.headline-xl {
+  @apply text-4xl md:text-6xl font-extrabold leading-[0.9] tracking-tighter;
 }
 
-.editorial-body {
-  @apply font-serif text-[1.125rem] leading-[1.6] max-w-[65ch];
+.headline-lg {
+  @apply text-3xl md:text-5xl font-extrabold leading-[0.9] tracking-tighter;
+}
+
+.headline-md {
+  @apply text-2xl md:text-3xl font-bold leading-tight tracking-tight;
+}
+
+.headline-sm {
+  @apply text-lg md:text-xl font-bold leading-snug tracking-tight;
+}
+
+.article-content {
+  @apply max-w-[680px] leading-[1.65] text-[1.1rem];
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
@@ -65,18 +77,4 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--red);
-}
-
-@keyframes ticker {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-
-  100% {
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-.animate-ticker {
-  animation: ticker 30s linear infinite;
 }

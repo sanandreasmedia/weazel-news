@@ -2,33 +2,36 @@ import { mockNews } from '@/lib/mockNews';
 import Link from 'next/link';
 
 export default function LatestList() {
-    const latestNews = [...mockNews].sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()).slice(0, 6);
+    const latestNews = mockNews.slice(0, 5);
 
     return (
-        <div className="flex flex-col gap-0 border-t border-fg pt-2">
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.2em] mb-4 text-fg/40">
+        <div className="flex flex-col">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-fg mb-6 flex items-center gap-3">
                 Latest Updates
-            </h2>
-
+                <span className="flex-grow h-px bg-fg"></span>
+            </h3>
             <div className="flex flex-col">
                 {latestNews.map((news) => (
                     <Link
                         key={news.slug}
                         href={`/news/${news.slug}`}
-                        className="group flex flex-col py-3 border-b border-border last:border-0"
+                        className="group flex items-baseline justify-between py-4 border-b border-border last:border-0"
                     >
-                        <h4 className="text-sm font-bold leading-snug group-hover:text-red transition-colors mb-1 font-sans">
+                        <h4 className="text-xs font-bold leading-snug group-hover:text-red transition-colors flex-grow pr-4">
                             {news.title}
                         </h4>
-                        <div className="text-[10px] text-muted font-bold uppercase tracking-wider">
-                            {new Date(news.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                        </div>
+                        <span className="text-[10px] font-bold text-muted tabular-nums uppercase">
+                            {new Date(news.publishedAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false })}
+                        </span>
                     </Link>
                 ))}
             </div>
-
-            <Link href="/" className="block mt-4 text-[10px] font-bold uppercase tracking-widest text-fg hover:text-red transition-colors">
-                See all news →
+            <Link
+                href="/latest"
+                className="mt-8 text-[9px] font-black uppercase tracking-[0.2em] text-muted hover:text-red transition-colors inline-flex items-center gap-2"
+            >
+                View Full Briefing
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14m-7-7 7 7-7 7" /></svg>
             </Link>
         </div>
     );

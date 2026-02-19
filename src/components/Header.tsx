@@ -38,18 +38,20 @@ export default function Header() {
     return (
         <header className="sticky top-0 z-50 bg-white border-b border-border">
             {/* Top Bar */}
-            <div className="bg-fg text-white py-1.5 border-b border-border">
-                <div className="max-container flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
-                    <Link href="/" className="hover:text-red transition-colors">
-                        Weazel News <span className="mx-2 opacity-30 text-white">|</span> Los Santos
+            <div className="bg-fg text-white py-1">
+                <div className="container-weazel flex justify-between items-center text-[9px] font-bold uppercase tracking-[0.2em]">
+                    <Link href="/" className="hover:text-red transition-colors flex items-center gap-2">
+                        <span>Weazel News</span>
+                        <span className="opacity-20">|</span>
+                        <span className="opacity-60">Los Santos</span>
                     </Link>
                     <div className="flex items-center gap-6">
-                        <div className="flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 bg-red rounded-full animate-pulse"></span>
+                        <div className="flex items-center gap-2">
+                            <span className="w-1.5 h-1.5 bg-red rounded-full"></span>
                             <span className="text-red">Live</span>
-                            <span className="ml-1 text-white opacity-80">{time || '--:--'}</span>
+                            <span className="ml-1 text-white/60">{time || '--:--'}</span>
                         </div>
-                        <span className="hidden sm:inline opacity-60">
+                        <span className="hidden sm:inline text-white/40">
                             {new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                         </span>
                     </div>
@@ -58,24 +60,24 @@ export default function Header() {
 
             {/* Main Navigation */}
             <div className="bg-white">
-                <div className="max-container flex flex-col md:flex-row items-center justify-between py-4 gap-4">
-                    <nav className="flex items-center gap-6 md:gap-8 flex-wrap justify-center">
-                        <Link href="/" className="text-xs font-bold uppercase tracking-widest hover:text-red transition-colors">Home</Link>
+                <div className="container-weazel flex flex-col md:flex-row items-center justify-between py-3 gap-4">
+                    <nav className="flex items-center gap-5 md:gap-7 flex-wrap justify-center font-bold text-[10px] uppercase tracking-widest">
+                        <Link href="/" className="hover:text-red transition-colors">Home</Link>
                         {categories.map((cat) => (
                             <Link
                                 key={cat.name}
                                 href={`/category/${cat.slug}`}
-                                className="text-xs font-bold uppercase tracking-widest hover:text-red transition-colors"
+                                className="hover:text-red transition-colors"
                             >
                                 {cat.name}
                             </Link>
                         ))}
                     </nav>
 
-                    <div className="flex items-center gap-6">
+                    <div className="flex items-center gap-5">
                         <Link
                             href="/submit"
-                            className="text-[10px] font-bold uppercase tracking-widest hover:text-red transition-colors border-b border-transparent hover:border-red"
+                            className="text-[10px] font-bold uppercase tracking-widest text-red hover:underline underline-offset-4"
                         >
                             Submit a Tip
                         </Link>
@@ -83,13 +85,13 @@ export default function Header() {
                         <form onSubmit={handleSearch} className="relative group">
                             <input
                                 type="text"
-                                placeholder="Search"
+                                placeholder="SEARCH"
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="bg-transparent border-b border-border px-1 py-1 text-xs focus:ring-0 focus:border-red transition-all w-20 lg:w-28 focus:w-40 outline-none text-fg"
+                                className="bg-transparent border-b border-border px-1 py-1 text-[10px] font-bold focus:ring-0 focus:border-fg transition-all w-20 lg:w-24 focus:w-32 outline-none text-fg placeholder:text-muted/40 uppercase tracking-widest"
                             />
                             <button type="submit" className="absolute right-0 top-1/2 -translate-y-1/2 text-fg hover:text-red" aria-label="Search">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
                             </button>
                         </form>
                     </div>
