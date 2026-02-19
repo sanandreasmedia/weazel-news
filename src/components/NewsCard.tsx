@@ -7,30 +7,33 @@ interface NewsCardProps {
 
 export default function NewsCard({ article }: NewsCardProps) {
     return (
-        <Link href={`/news/${article.slug}`} className="group flex flex-col h-full bg-white border-b border-gray-100 pb-4 md:border-none md:pb-0">
-            <div className="relative aspect-video overflow-hidden mb-3">
+        <Link href={`/news/${article.slug}`} className="group flex flex-col h-full bg-white">
+            <div className="relative aspect-video overflow-hidden mb-4 bg-muted/10">
                 <img
                     src={article.image}
                     alt={article.title}
-                    className="object-cover w-full h-full transition-transform duration-500 group-hover:scale-105"
+                    className="object-cover w-full h-full grayscale-[0.2] transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute top-0 left-0">
-                    <span className="bg-black text-white text-[9px] font-bold px-2 py-0.5 uppercase tracking-tighter">
-                        {article.category}
-                    </span>
-                </div>
             </div>
 
             <div className="flex flex-col flex-1">
-                <h3 className="text-lg md:text-xl font-header font-black leading-tight mb-2 group-hover:text-weazel-yellow transition-colors line-clamp-2">
+                <div className="flex items-center gap-2 mb-2">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-red">
+                        {article.category}
+                    </span>
+                    <span className="w-1 h-1 bg-border rounded-full" />
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-muted">
+                        {new Date(article.publishedAt).toLocaleDateString()}
+                    </span>
+                </div>
+
+                <h3 className="text-xl font-bold leading-tight mb-2 group-hover:text-red transition-colors line-clamp-2">
                     {article.title}
                 </h3>
-                <p className="text-gray-600 text-xs line-clamp-2 mb-3 leading-relaxed">
+
+                <p className="text-muted text-sm line-clamp-2 mb-4 leading-relaxed font-serif">
                     {article.excerpt}
                 </p>
-                <div className="mt-auto text-[10px] text-gray-400 font-bold uppercase tracking-widest">
-                    {new Date(article.publishedAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {article.author}
-                </div>
             </div>
         </Link>
     );

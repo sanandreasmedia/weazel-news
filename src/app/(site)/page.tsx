@@ -3,76 +3,93 @@ import HeroStory from '@/components/HeroStory';
 import LatestList from '@/components/LatestList';
 import NewsCard from '@/components/NewsCard';
 import SectionHeader from '@/components/SectionHeader';
-import SpotlightSection from '@/components/SpotlightSection';
+import Link from 'next/link';
 
 export default function HomePage() {
-    // Main Story (First breaking or just the first)
+    // Main Story
     const heroArticle = mockNews.find(n => n.isBreaking) || mockNews[0];
 
-    // Trending News (Next 3)
-    const trendingNews = mockNews.filter(n => n.slug !== heroArticle.slug).slice(0, 3);
+    // Top Stories (Next 3)
+    const topStories = mockNews.filter(n => n.slug !== heroArticle.slug).slice(0, 3);
 
-    // Crime Section
+    // Category News
     const crimeNews = mockNews.filter(n => n.category === 'crime').slice(0, 4);
-
-    // Politics Section
     const politicsNews = mockNews.filter(n => n.category === 'politics').slice(0, 4);
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            {/* Top Section: Hero + Latest */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-                <div className="lg:col-span-2">
+        <div className="max-container py-12">
+            {/* Lead Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-20">
+                <div className="lg:col-span-8">
                     <HeroStory article={heroArticle} />
                 </div>
-                <div className="lg:col-span-1">
+                <div className="lg:col-span-4 lg:border-l lg:border-border lg:pl-12">
                     <LatestList />
                 </div>
             </div>
 
-            {/* Trending Section */}
-            <div className="mb-16">
-                <SectionHeader title="Trending Topics" />
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {trendingNews.map((news) => (
+            {/* Top Stories Grid */}
+            <div className="mb-20">
+                <SectionHeader title="Top Stories" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+                    {topStories.map((news) => (
                         <NewsCard key={news.slug} article={news} />
                     ))}
                 </div>
             </div>
 
-            {/* Spotlight Section */}
-            <SpotlightSection />
-
-            {/* Crime Section */}
-            <div className="mb-16 border-t-8 border-black pt-8">
-                <SectionHeader title="Crime & Justice" href="/category/crime" />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {crimeNews.map((news) => (
-                        <NewsCard key={news.slug} article={news} />
-                    ))}
-                </div>
-            </div>
-
-            {/* Politics Section */}
-            <div className="mb-16 border-t-8 border-weazel-yellow pt-8">
-                <SectionHeader title="Politics & Power" href="/category/politics" />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {politicsNews.map((news) => (
-                        <NewsCard key={news.slug} article={news} />
-                    ))}
-                </div>
-            </div>
-
-            {/* Culture Section (Small teaser) */}
-            <div className="bg-surface-dark text-white p-8 md:p-12 mb-16">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-                    <div>
-                        <h2 className="text-4xl text-weazel-yellow mb-2">Vinewood Life</h2>
-                        <p className="text-gray-400 max-w-md">Inside the glitz and glamour of Los Santos. Fashion, Art, and the latest from the movie capital of the world.</p>
+            {/* Category Blocks */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                {/* Crime Section */}
+                <div>
+                    <SectionHeader title="Crime" href="/category/crime" />
+                    <div className="flex flex-col">
+                        {crimeNews.map((news) => (
+                            <Link
+                                key={news.slug}
+                                href={`/news/${news.slug}`}
+                                className="group flex justify-between py-4 border-b border-border last:border-0"
+                            >
+                                <div className="max-w-[70%]">
+                                    <h4 className="text-sm font-bold leading-snug group-hover:text-red transition-colors mb-1">
+                                        {news.title}
+                                    </h4>
+                                    <p className="text-xs text-muted font-bold uppercase tracking-widest">
+                                        {new Date(news.publishedAt).toLocaleDateString()}
+                                    </p>
+                                </div>
+                                <div className="w-20 h-14 overflow-hidden bg-muted/10 grayscale-[0.5] group-hover:grayscale-0 transition-all">
+                                    <img src={news.image} alt="" className="w-full h-full object-cover" />
+                                </div>
+                            </Link>
+                        ))}
                     </div>
-                    <button className="bg-weazel-yellow text-black px-8 py-3 font-header font-black uppercase tracking-widest hover:bg-white transition-all whitespace-nowrap">
-                        Explore Culture
-                    </button>
+                </div>
+
+                {/* Politics Section */}
+                <div>
+                    <SectionHeader title="Politics" href="/category/politics" />
+                    <div className="flex flex-col">
+                        {politicsNews.map((news) => (
+                            <Link
+                                key={news.slug}
+                                href={`/news/${news.slug}`}
+                                className="group flex justify-between py-4 border-b border-border last:border-0"
+                            >
+                                <div className="max-w-[70%]">
+                                    <h4 className="text-sm font-bold leading-snug group-hover:text-red transition-colors mb-1">
+                                        {news.title}
+                                    </h4>
+                                    <p className="text-xs text-muted font-bold uppercase tracking-widest">
+                                        {new Date(news.publishedAt).toLocaleDateString()}
+                                    </p>
+                                </div>
+                                <div className="w-20 h-14 overflow-hidden bg-muted/10 grayscale-[0.5] group-hover:grayscale-0 transition-all">
+                                    <img src={news.image} alt="" className="w-full h-full object-cover" />
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

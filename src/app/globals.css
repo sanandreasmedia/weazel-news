@@ -1,36 +1,30 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #111111;
-
-  /* Weazel News Brand Colors */
-  --weazel-yellow: #FFCC00;
-  --weazel-yellow-dark: #E6B800;
-  --breaking-red: #CC0000;
-  --surface-light: #F4F4F4;
-  --surface-dark: #1A1A1A;
+  --bg: #FFFFFF;
+  --fg: #0B0B0B;
+  --muted: #71717A;
+  --border: #E5E5E5;
+  --red: #E10600;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-
-  --color-weazel-yellow: var(--weazel-yellow);
-  --color-weazel-yellow-dark: var(--weazel-yellow-dark);
-  --color-breaking: var(--breaking-red);
-  --color-surface-light: var(--surface-light);
-  --color-surface-dark: var(--surface-dark);
+  --color-bg: var(--bg);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-red: var(--red);
 
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
-  --font-header: "Oswald", "Inter", system-ui, sans-serif;
+  --font-display: "Playfair Display", "Georgia", serif;
+  --font-header: "Inter", system-ui, sans-serif;
 }
 
 @layer base {
   body {
-    background: var(--background);
-    color: var(--foreground);
-    @apply antialiased;
+    background: var(--bg);
+    color: var(--fg);
+    @apply antialiased selection:bg-red selection:text-white;
   }
 
   h1,
@@ -39,40 +33,50 @@
   h4,
   h5,
   h6 {
-    @apply font-bold tracking-tight uppercase;
+    @apply font-bold tracking-tight;
   }
 }
 
-@keyframes pulse-subtle {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.6;
-  }
+.max-container {
+  @apply max-w-[1100px] mx-auto px-4 md:px-8;
 }
 
-.animate-pulse-subtle {
-  animation: pulse-subtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+/* Editorial Typography */
+.editorial-headline {
+  @apply font-display leading-[1.1] tracking-[-0.02em];
+}
+
+.editorial-body {
+  @apply font-serif text-[1.125rem] leading-[1.6] max-w-[65ch];
 }
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background);
+  background: var(--bg);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--weazel-yellow);
-  border-radius: 4px;
+  background: var(--fg);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--weazel-yellow-dark);
+  background: var(--red);
+}
+
+@keyframes ticker {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  100% {
+    transform: translate3d(-100%, 0, 0);
+  }
+}
+
+.animate-ticker {
+  animation: ticker 30s linear infinite;
 }

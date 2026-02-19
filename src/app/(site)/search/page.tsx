@@ -17,62 +17,50 @@ function SearchResults() {
     );
 
     return (
-        <div className="container mx-auto px-4 py-12 min-h-[60vh]">
-            <div className="mb-12">
-                <h1 className="text-4xl md:text-5xl font-header font-black uppercase italic mb-4">
+        <div className="max-container py-12 min-h-[60vh]">
+            <div className="mb-16 border-b border-fg pb-12">
+                <h1 className="editorial-headline text-5xl md:text-8xl text-fg mb-6">
                     Search Results
                 </h1>
-                <div className="flex items-center gap-2 font-bold uppercase tracking-widest text-xs text-gray-400">
-                    <span>Search query:</span>
-                    <span className="text-black bg-weazel-yellow px-2 py-0.5">"{query}"</span>
-                    <span className="mx-2">•</span>
-                    <span>{results.length} Matches found</span>
+                <div className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-[0.2em] text-muted">
+                    <span>Query:</span>
+                    <span className="text-fg border border-border px-2 py-1">"{query}"</span>
+                    <span className="w-1 h-1 bg-border rounded-full" />
+                    <span>{results.length} Matches Found</span>
                 </div>
             </div>
 
-            <div className="border-t-4 border-black pt-12">
+            <div>
                 {query ? (
                     results.length > 0 ? (
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-8 gap-y-12">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
                             {results.map((article) => (
                                 <NewsCard key={article.slug} article={article} />
                             ))}
                         </div>
                     ) : (
-                        <div className="text-center py-24 bg-surface-light border-2 border-dashed border-gray-200">
-                            <svg
-                                className="w-16 h-16 mx-auto mb-6 text-gray-300"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
-                            </svg>
-                            <h3 className="text-2xl font-header font-black mb-2 uppercase">No Lead found</h3>
-                            <p className="text-gray-400 max-w-sm mx-auto">We couldn't find any news matches for your search. Try another keyword or check for typos.</p>
+                        <div className="text-center py-24 border border-border">
+                            <h3 className="text-lg font-bold uppercase tracking-widest mb-2">No results found</h3>
+                            <p className="text-muted font-serif">We couldn't find any matches for "{query}". Try another keyword.</p>
                         </div>
                     )
                 ) : (
-                    <div className="text-center py-24 bg-surface-light">
-                        <h3 className="text-2xl font-header font-black mb-2 uppercase italic">Type something to search...</h3>
-                        <p className="text-gray-400">The city's secrets are waiting for you.</p>
+                    <div className="text-center py-24 border border-border">
+                        <h3 className="text-lg font-bold uppercase tracking-widest mb-2">Enter a search term</h3>
+                        <p className="text-muted font-serif">The archives of Los Santos are at your disposal.</p>
                     </div>
                 )}
             </div>
 
             {/* Suggested Topics */}
-            <div className="mt-20">
+            <div className="mt-24">
                 <SectionHeader title="Popular Searches" />
-                <div className="flex flex-wrap gap-3">
-                    {['LSPD', 'Vinewood', 'Bank Robbery', 'Diamond Casino', 'San Andreas Politics'].map(tag => (
+                <div className="flex flex-wrap gap-4">
+                    {['LSPD', 'Vinewood', 'Bank Robbery', 'Diamond Casino', 'Politics'].map(tag => (
                         <a
                             key={tag}
                             href={`/search?q=${encodeURIComponent(tag)}`}
-                            className="bg-black text-white px-5 py-2 text-xs font-bold uppercase tracking-widest hover:bg-weazel-yellow hover:text-black transition-all"
+                            className="text-[10px] font-bold uppercase tracking-[0.2em] border border-border px-6 py-3 hover:bg-fg hover:text-white transition-all"
                         >
                             {tag}
                         </a>
@@ -85,7 +73,7 @@ function SearchResults() {
 
 export default function SearchPage() {
     return (
-        <Suspense fallback={<div className="container mx-auto px-4 py-20 text-center font-header font-black uppercase animate-pulse">Scanning the streets...</div>}>
+        <Suspense fallback={<div className="max-container py-20 text-center font-bold uppercase tracking-widest animate-pulse">Scanning archives...</div>}>
             <SearchResults />
         </Suspense>
     );

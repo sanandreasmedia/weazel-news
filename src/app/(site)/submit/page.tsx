@@ -13,58 +13,60 @@ export default function SubmitTipPage() {
     };
 
     return (
-        <div className="container mx-auto px-4 py-20 max-w-2xl">
-            <div className="text-center mb-12">
-                <h1 className="text-5xl font-header font-black uppercase italic mb-4">Submit a Tip</h1>
-                <p className="text-gray-500 font-medium">Have something our reporters should know? We maintain absolute confidentiality. We confirm what you suspect.</p>
+        <div className="max-container py-20 max-w-2xl">
+            <div className="text-center mb-16">
+                <h1 className="editorial-headline text-5xl md:text-7xl text-fg mb-6">Submit a Tip</h1>
+                <p className="text-muted font-serif text-lg leading-relaxed">
+                    Have information our reporters should know? We maintain absolute confidentiality. Every lead is verified manually by our investigative team.
+                </p>
             </div>
 
             {submitted ? (
-                <div className="bg-surface-light border-2 border-black p-12 text-center">
-                    <div className="w-16 h-16 bg-weazel-yellow rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
+                <div className="border border-fg p-12 text-center">
+                    <div className="w-12 h-12 bg-red/10 text-red rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5" /></svg>
                     </div>
-                    <h2 className="text-2xl font-header font-black uppercase mb-2">Message Received</h2>
-                    <p className="text-gray-500">Your tip has been forwarded to our investigative team. Thank you for making Los Santos safer (or more interesting).</p>
+                    <h2 className="text-xl font-bold uppercase tracking-widest mb-4">Transmission Received</h2>
+                    <p className="text-muted font-serif mb-8">Your information has been forwarded to our newsroom. Thank you for your courage.</p>
                     <button
                         onClick={() => setSubmitted(false)}
-                        className="mt-8 bg-black text-white px-8 py-3 font-header font-black uppercase tracking-widest hover:bg-weazel-yellow hover:text-black transition-all"
+                        className="text-[10px] font-bold uppercase tracking-[0.3em] border border-fg px-8 py-4 hover:bg-fg hover:text-white transition-all"
                     >
-                        Submit another tip
+                        Send another report
                     </button>
                 </div>
             ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-10">
                     <div>
-                        <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Alias / Name (Optional)</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-muted mb-3">Alias (Optional)</label>
                         <input
                             type="text"
-                            placeholder="e.g. Concerned Citizen"
-                            className="w-full bg-surface-light border-none px-4 py-4 focus:ring-2 focus:ring-weazel-yellow outline-none transition-all text-black font-medium"
+                            placeholder="Concerned Citizen"
+                            className="w-full bg-transparent border-b border-border py-4 focus:border-red outline-none transition-all text-fg font-medium"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-[10px] font-black uppercase tracking-widest text-gray-400 mb-2">Your Message (Required)</label>
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-muted mb-3">Narrative (Required)</label>
                         <textarea
                             required
                             rows={6}
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
-                            placeholder="Describe what you saw, where it happened, and who was involved..."
-                            className="w-full bg-surface-light border-none px-4 py-4 focus:ring-2 focus:ring-weazel-yellow outline-none transition-all text-black font-medium resize-none"
+                            placeholder="Describe the events..."
+                            className="w-full bg-transparent border border-border px-6 py-6 focus:border-red outline-none transition-all text-fg font-medium resize-none font-serif"
                         ></textarea>
                     </div>
 
-                    <div className="bg-surface-dark text-white/60 p-4 text-[10px] font-bold uppercase tracking-tight">
-                        * By clicking submit, you agree that Weazel News may investigate and broadcast your information. We do not reveal our sources to the LSPD unless mandated by a Vinewood judge (roughly 2% chance).
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-muted/60 leading-relaxed italic">
+                        * Information is broadcast at our discretion. We protect our sources from the LSPD unless under federal subpoena.
                     </div>
 
                     <button
                         type="submit"
-                        className="w-full bg-weazel-yellow text-black py-5 font-header font-black uppercase text-xl tracking-widest hover:bg-black hover:text-white transition-all shadow-lg"
+                        className="w-full bg-fg text-white py-6 font-bold uppercase text-xs tracking-[0.4em] hover:bg-red transition-all"
                     >
-                        Transmit Tip
+                        Transmit Lead
                     </button>
                 </form>
             )}

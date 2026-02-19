@@ -9,44 +9,40 @@ export default function BreakingTicker() {
     if (breakingNews.length === 0) return null;
 
     return (
-        <div className="bg-breaking text-white py-2 overflow-hidden flex items-center border-y border-white/10 relative z-40 shadow-lg">
-            <div className="px-4 font-black italic uppercase tracking-widest text-sm flex-shrink-0 flex items-center gap-2 border-r border-white/20 mr-2 bg-breaking">
-                <span className="relative flex h-3 w-3">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-                </span>
-                Breaking News
+        <div className="bg-red text-white py-1.5 overflow-hidden flex items-center relative z-40">
+            <div className="px-6 font-bold uppercase tracking-[0.2em] text-[10px] flex-shrink-0 flex items-center gap-2 border-r border-white/20 mr-4 bg-red z-10">
+                Breaking
             </div>
-            <div className="flex gap-8 animate-marquee whitespace-nowrap">
-                {breakingNews.map((news, i) => (
+            <div className="flex gap-12 animate-marquee whitespace-nowrap">
+                {breakingNews.map((news) => (
                     <Link
                         key={news.slug}
                         href={`/news/${news.slug}`}
-                        className="text-sm font-semibold hover:underline"
+                        className="text-[11px] font-bold uppercase tracking-wider hover:underline"
                     >
-                        +++ {news.title} +++
+                        {news.title}
                     </Link>
                 ))}
                 {/* Duplicate for seamless loop */}
-                {breakingNews.map((news, i) => (
+                {breakingNews.map((news) => (
                     <Link
                         key={`${news.slug}-dup`}
                         href={`/news/${news.slug}`}
-                        className="text-sm font-semibold hover:underline"
+                        className="text-[11px] font-bold uppercase tracking-wider hover:underline"
                     >
-                        +++ {news.title} +++
+                        {news.title}
                     </Link>
                 ))}
             </div>
             <style jsx>{`
-        .animate-marquee {
-          animation: marquee 30s linear infinite;
-        }
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
+                .animate-marquee {
+                    animation: marquee 40s linear infinite;
+                }
+                @keyframes marquee {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+            `}</style>
         </div>
     );
 }
